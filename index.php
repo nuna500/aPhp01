@@ -4,62 +4,77 @@
  <meta charset="UTF-8">
  <title>Document</title>
 </head>
+ 
  <?php
+  $LINEData = file_get_contents('php://input');
+  $jsonData = json_decode($LINEData,true);
 
+  $replyToken = $jsonData["events"][0]["replyToken"];
+  $userID = $jsonData["events"][0]["source"]["userId"];
+  $text = $jsonData["events"][0]["message"]["text"];
+  $timestamp = $jsonData["events"][0]["timestamp"];
 
-$API_URL = 'https://api.line.me/v2/bot/message';
-$ACCESS_TOKEN = 'Ek0Jo6EYTVLSTeQlCiRe29lu7WZ4BJeG6NprVBCMz4RdB6K2rdCAoc5myPf551x7i6L6OPaTVz744tsqv4h/TNO2xfPJXxMd9fI4J3taNgqFLmwU5IhqBiszasnkt5xEzOUV1ZE4agbtisNhxAofTgdB04t89/1O/w1cDnyilFU='; 
-$channelSecret = 'fa57bde2d7784a9d020a86fbc4a24faf';
+  
+  /*$servername = "localhost";
+  $username = "root";
+  $password = "";
+  $dbname = "LINE";
+  $mysql = new mysqli($servername, $username, $password, $dbname);
+  mysqli_set_charset($mysql, "utf8");
 
+  if ($mysql->connect_error){
+  $errorcode = $mysql->connect_error;
+  print("MySQL(Connection)> ".$errorcode);
+  }
+  */
 
-$POST_HEADER = array('Content-Type: application/json', 'Authorization: Bearer ' . $ACCESS_TOKEN);
-
-$request = file_get_contents('php://input');   // Get request content
-$request_array = json_decode($request, true);   // Decode JSON to Array
-
-
-
-if ( sizeof($request_array['events']) > 0 ) {
-
-    foreach ($request_array['events'] as $event) {
-
-        $reply_message = '';
-        $reply_token = $event['replyToken'];
-
-
-        $data = [
-            'replyToken' => $reply_token,
-            'messages' => [['type' => 'text', 'text' => json_encode($request_array)]]
-        ];
-        $post_body = json_encode($data, JSON_UNESCAPED_UNICODE);
-
-        $send_result = send_reply_message($API_URL.'/reply', $POST_HEADER, $post_body);
-
-       // echo "Result: ".$send_result."\r\n";
-         echo "Hello";
-    }
-}
-
-echo "OK";
-
-
-
-
-function send_reply_message($url, $post_header, $post_body)
-{
-    $ch = curl_init($url);
-    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $post_header);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, $post_body);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-    $result = curl_exec($ch);
-    curl_close($ch);
-
+  function sendMessage($replyJson, $sendInfo){
+          $ch = curl_init($sendInfo["URL"]);
+          curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+          curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+          curl_setopt($ch, CURLOPT_POST, true);
+          curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+              'Content-Type: application/json',
+              'Authorization: Bearer ' . $sendInfo["AccessToken"])
+              );
+          curl_setopt($ch, CURLOPT_POSTFIELDS, $replyJson);
+          $result = curl_exec($ch);
+          curl_close($ch);
     return $result;
-}
+  }
+/*
+  $mysql->query("INSERT INTO `LOG`(`UserID`, `Text`, `Timestamp`) VALUES ('$userID','$text','$timestamp')");
 
-?>
+  $getUser = $mysql->query("SELECT * FROM `Customer` WHERE `UserID`='$userID'");
+  $getuserNum = $getUser->num_rows;
+  */
+  $replyText["type"] = "text";
+  if ($getuserNum == "0"){
+    $replyText["text"] = "สวัสดีคับบบบ";
+  } else {
+    while($row = $getUser->fetch_assoc()){
+      $Name = $row['Name'];
+      $Surname = $row['Surname'];
+      $CustomerID = $row['CustomerID'];
+    }
+    $replyText["text"] = "สวัสดีคุณ $Name $Surname (#$CustomerID)";
+  }
+
+  $lineData['URL'] = "https://api.line.me/v2/bot/message/reply";
+  $lineData['AccessToken'] ='Ek0Jo6EYTVLSTeQlCiRe29lu7WZ4BJeG6NprVBCMz4RdB6K2rdCAoc5myPf551x7i6L6OPaTVz744tsqv4h/TNO2xfPJXxMd9fI4J3taNgqFLmwU5IhqBiszasnkt5xEzOUV1ZE4agbtisNhxAofTgdB04t89/1O/w1cDnyilFU=';
+
+  $replyJson["replyToken"] = $replyToken;
+  $replyJson["messages"][0] = $replyText;
+
+  $encodeJson = json_encode($replyJson);
+
+  $results = sendMessage($encodeJson,$lineData);
+  echo $results;
+  http_response_code(200);
+  
+  ?>
+ 
+
 <body>
  Hello heroku!
 </body>
