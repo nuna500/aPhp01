@@ -9,11 +9,7 @@
 
   $replyToken = $jsonData["events"][0]["replyToken"];
   $userID = $jsonData["events"][0]["source"]["userId"];
-  $text = $jsonData["events"][0]["message"]["text"];
-  $timestamp = $jsonData["events"][0]["timestamp"];
   $replyText="GG";
-  
-
   function sendMessage($replyJson, $sendInfo){
           $ch = curl_init($sendInfo["URL"]);
           curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
