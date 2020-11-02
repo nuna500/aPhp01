@@ -14,19 +14,7 @@
   $text = $jsonData["events"][0]["message"]["text"];
   $timestamp = $jsonData["events"][0]["timestamp"];
 
-  
-  /*$servername = "localhost";
-  $username = "root";
-  $password = "";
-  $dbname = "LINE";
-  $mysql = new mysqli($servername, $username, $password, $dbname);
-  mysqli_set_charset($mysql, "utf8");
-
-  if ($mysql->connect_error){
-  $errorcode = $mysql->connect_error;
-  print("MySQL(Connection)> ".$errorcode);
-  }
-  */
+ 
 
   function sendMessage($replyJson, $sendInfo){
           $ch = curl_init($sendInfo["URL"]);
@@ -42,12 +30,7 @@
           curl_close($ch);
     return $result;
   }
-/*
-  $mysql->query("INSERT INTO `LOG`(`UserID`, `Text`, `Timestamp`) VALUES ('$userID','$text','$timestamp')");
 
-  $getUser = $mysql->query("SELECT * FROM `Customer` WHERE `UserID`='$userID'");
-  $getuserNum = $getUser->num_rows;
-  */
   $replyText["type"] = "text";
   if ($getuserNum == "0"){
     $replyText["text"] = "สวัสดีคับบบบ";
@@ -60,8 +43,9 @@
     $replyText["text"] = "สวัสดีคุณ $Name $Surname (#$CustomerID)";
   }
 
-  $lineData['URL'] = "https://api.line.me/v2/bot/message/reply";
-  $lineData['AccessToken'] ='Ek0Jo6EYTVLSTeQlCiRe29lu7WZ4BJeG6NprVBCMz4RdB6K2rdCAoc5myPf551x7i6L6OPaTVz744tsqv4h/TNO2xfPJXxMd9fI4J3taNgqFLmwU5IhqBiszasnkt5xEzOUV1ZE4agbtisNhxAofTgdB04t89/1O/w1cDnyilFU=';
+  //$lineData['URL'] = "https://api.line.me/v2/bot/message/reply";
+  $lineData['URL'] = "https://api.line.me/v2/bot/message";
+  $lineData['AccessToken'] ="Ek0Jo6EYTVLSTeQlCiRe29lu7WZ4BJeG6NprVBCMz4RdB6K2rdCAoc5myPf551x7i6L6OPaTVz744tsqv4h/TNO2xfPJXxMd9fI4J3taNgqFLmwU5IhqBiszasnkt5xEzOUV1ZE4agbtisNhxAofTgdB04t89/1O/w1cDnyilFU=";
 
   $replyJson["replyToken"] = $replyToken;
   $replyJson["messages"][0] = $replyText;
