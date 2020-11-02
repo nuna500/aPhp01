@@ -6,6 +6,7 @@
 </head>
  
  <?php
+ 
   $LINEData = file_get_contents('php://input');
   $jsonData = json_decode($LINEData,true);
 
@@ -54,7 +55,7 @@
 
   $results = sendMessage($encodeJson,$lineData);
   echo $results;
-  http_response_code(200);
+ 
   
   ?>
  
