@@ -33,19 +33,10 @@
   }
 
   $replyText["type"] = "text";
-  if ($getuserNum == "0"){
-    $replyText["text"] = "สวัสดีคับบบบ";
-  } else {
-    while($row = $getUser->fetch_assoc()){
-      $Name = $row['Name'];
-      $Surname = $row['Surname'];
-      $CustomerID = $row['CustomerID'];
-    }
-    $replyText["text"] = "สวัสดีคุณ $Name $Surname (#$CustomerID)";
-  }
+  $replyText["text"] = "สวัสดีคุณ";
 
-  //$lineData['URL'] = "https://api.line.me/v2/bot/message/reply";
-  $lineData['URL'] = "https://api.line.me/v2/bot/message";
+  $lineData['URL'] = "https://api.line.me/v2/bot/message/reply";
+  
   $lineData['AccessToken'] ="Ek0Jo6EYTVLSTeQlCiRe29lu7WZ4BJeG6NprVBCMz4RdB6K2rdCAoc5myPf551x7i6L6OPaTVz744tsqv4h/TNO2xfPJXxMd9fI4J3taNgqFLmwU5IhqBiszasnkt5xEzOUV1ZE4agbtisNhxAofTgdB04t89/1O/w1cDnyilFU=";
 
   $replyJson["replyToken"] = $replyToken;
@@ -56,7 +47,6 @@
   $results = sendMessage($encodeJson,$lineData);
   echo $results;
  
-  
   ?>
  
 
