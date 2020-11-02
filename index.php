@@ -8,7 +8,7 @@
  <?php
  
  $accessToken = "Ek0Jo6EYTVLSTeQlCiRe29lu7WZ4BJeG6NprVBCMz4RdB6K2rdCAoc5myPf551x7i6L6OPaTVz744tsqv4h/TNO2xfPJXxMd9fI4J3taNgqFLmwU5IhqBiszasnkt5xEzOUV1ZE4agbtisNhxAofTgdB04t89/1O/w1cDnyilFU=";
-   //copy ข้อความ Channel access token ตอนที่ตั้งค่า
+   
    $content = file_get_contents('php://input');
    $arrayJson = json_decode($content, true);
    $arrayHeader = array();
@@ -18,7 +18,7 @@
    $message = $arrayJson['events'][0]['message']['text'];
    //รับ id ของผู้ใช้
    $id = $arrayJson['events'][0]['source']['userId'];
-   if($message == "นับ 1-10"){
+   if($message == "1-10"){
        for($i=1;$i<=10;$i++){
           $arrayPostData['to'] = $id;
           $arrayPostData['messages'][0]['type'] = "text";
@@ -39,7 +39,7 @@
       $result = curl_exec($ch);
       curl_close ($ch);
    }
-   exit;
+  
   ?>
  
 
