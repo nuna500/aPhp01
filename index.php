@@ -4,7 +4,10 @@
  <meta charset="UTF-8">
 </head>
  <?php
-
+   $str = "ไม่มีข้อมูล";
+   if(isset($_POST['text'])){	
+    $str = $_POST['text'];
+   }
    $accessToken = "Ek0Jo6EYTVLSTeQlCiRe29lu7WZ4BJeG6NprVBCMz4RdB6K2rdCAoc5myPf551x7i6L6OPaTVz744tsqv4h/TNO2xfPJXxMd9fI4J3taNgqFLmwU5IhqBiszasnkt5xEzOUV1ZE4agbtisNhxAofTgdB04t89/1O/w1cDnyilFU=";
   // $content = file_get_contents('php://input');
    //$arrayJson = json_decode($content, true);
@@ -19,7 +22,7 @@
    //if($message == "สวัสดี"){
       $arrayPostData['to'] = $id;
       $arrayPostData['messages'][0]['type'] = "text";
-      $arrayPostData['messages'][0]['text'] = $_POST['text'];
+      $arrayPostData['messages'][0]['text'] =$str ;
       //$arrayPostData['messages'][1]['type'] = "sticker";
       //$arrayPostData['messages'][1]['packageId'] = "2";
      // $arrayPostData['messages'][1]['stickerId'] = "34";
